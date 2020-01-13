@@ -6,8 +6,8 @@
  */
 
 class Router {
-    protected $controller;
-    protected $method;
+    protected $controller = 'Pages';
+    protected $method = 'index';
     protected $params = [];
 
     public function __construct() {
@@ -18,14 +18,15 @@ class Router {
             $this->controller = ucwords($url[0]);
             // unset first value
             unset($url[0]);
-
-            // Require controller
-            require_once '../app/controllers/' . $this->controller . '.php';
-
-            // Instantiate controller
-            $this->controller = new $this->controller;
         }
 
+        // Require controller
+        require_once '../app/controllers/' . $this->controller . '.php';
+
+        // Instantiate controller
+        $this->controller = new $this->controller;
+
+        // TODO now default method works even if controller is not Pages, it may be not secure in some cases
         // Check if url contains second value
         if ($url[1]) {
             // Check if method exists in controller
@@ -41,7 +42,7 @@ class Router {
         $this->params = $url ? array_values($url) : [];
 
         // call a method as a callback of params
-//        call_user_func_array([$this->controller, $this->method], $this->params);
+        call_user_func_array([$this->controller, $this->method], $this->params);
     }
 
     public function getUrl() {

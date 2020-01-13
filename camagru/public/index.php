@@ -1,6 +1,6 @@
 <?php
 
-// TODO moove error reporting to another place
+// TODO move error reporting setup to another place
 // Turn on error messages
 
 ini_set('display_errors', 1);
