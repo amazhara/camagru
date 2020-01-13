@@ -1,13 +1,9 @@
 <?php
 
-spl_autoload_register(function($class) {
-	// change namespace to normal scobes
-	// app\core\Class -> app/core/Class
-	$path = str_replace('\\', '/', $class . '.php');
-	// Include class
-	if (file_exists($path)) {
-		require $path;
-	}
-});
+// TODO add namespaces
 
-$router = new Router;
+// Include core libraries
+spl_autoload_register(function($class) {
+//    echo 'core/' . $class . '.php' . "\n";
+    require_once 'core/' . $class . '.php';
+});

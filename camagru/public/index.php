@@ -10,4 +10,4 @@ error_reporting(E_ALL);
 include_once "../app/bootstrap.php";
 
 // Init app
-// $init = new Router;
+$init = new Router;

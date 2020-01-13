@@ -84,4 +84,5 @@ fabric.properties
 
 # My
 logs/*
+logs/apache2/*
 .idea/*
