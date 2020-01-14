@@ -2,7 +2,7 @@
 
 /*
  * Base Controller class
- * Instantiate models and views
+ * Use models and views
  */
 
 class Controller
@@ -22,9 +22,8 @@ class Controller
         if (file_exists('../app/view/' . $view . '.php')) {
             require_once '../app/view/' . $view . '.php';
         } else {
-//             TODO make better error massage for ex 404 error
-//            die('View does not exists');
+    //      TODO make better error massage for ex 404 error
+            die('View does not exists');
         }
-        var_dump($data);
     }
 }

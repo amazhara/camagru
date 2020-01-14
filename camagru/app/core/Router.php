@@ -2,7 +2,7 @@
 
 /*
  * Router takes request and cuts it in Controller -> Action (Method)
- * example /user/login cuts to User -> login
+ * example /user/login is cut to User -> login
  */
 
 class Router {
