@@ -2,10 +2,10 @@
 
 /*
  * Default Controller
- * Instantiate default page
+ * Cover default page
  */
 
-class Pages {
+class Pages extends Controller {
 
     // Default method
     public function index() {
@@ -13,18 +13,16 @@ class Pages {
             'title' => 'Camagru',
             'description' => 'Social network to share photos'
         ];
-
-        echo $data['title'] . '<br>';
-        echo $data['description'] . '<br>';
+        $this->view('pages/index', $data);
     }
 
     // About us page
     public function about() {
         $data = [
-            'title' => 'About Us',
-            'description' => 'App to share photos with other users'
+            'title' => 'About Camagru',
+            'description' => 'App to share photos with other users',
+            'author' => 'Written By Arthur Mazhara'
         ];
-        echo $data['title'] . '<br>';
-        echo $data['description'] . '<br>';
+        $this->view('pages/about', $data);
     }
 }
