@@ -3,6 +3,7 @@
 /*
  * Default Controller
  * Cover default page
+ * Dont load any models
  */
 
 class Pages extends Controller {

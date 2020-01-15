@@ -21,10 +21,6 @@ $init = new Router;
 
 
 
-
-
-// TODO make normal frontend views with separate header and footer
-// TODO include bootstrap in frontend
 // TODO add User controller model and view functional
 // TODO User registration
 // TODO User login
