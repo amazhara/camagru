@@ -17,10 +17,6 @@ $init = new Router;
 
 
 
-
-
-
-
 // TODO add User controller model and view functional
 // TODO User registration
 // TODO User login

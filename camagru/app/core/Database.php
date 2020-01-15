@@ -31,7 +31,7 @@ class Database {
         // Connect to db and create PDO instance
         try {
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
-        } catch (PDOExceptionπ $e) {
+        } catch (PDOException $e) {
             $this->error = $e->getMessage();
             echo $this->error;
         }
@@ -45,6 +45,28 @@ class Database {
     // Execute prepared statement
     public function execute() {
         return $this->stmt->execute();
+    }
+
+    // Bind values
+    public function bind($param, $value, $type = null) {
+        // Check type
+        if(is_null($type)) {
+            switch(true) {
+                case is_int($value):
+                    $type = PDO::PARAM_INT;
+                    break;
+                case is_bool($value):
+                    $type = PDO::PARAM_BOOL;
+                    break;
+                case is_null($value):
+                    $type = PDO::PARAM_NULL;
+                    break;
+                default:
+                    $type = PDO::PARAM_STR;
+            }
+        }
+
+        $this->stmt->bindValue($param, $value, $type);
     }
 
     // Get result set as array of objects and methods eq rows

@@ -8,6 +8,7 @@ require_once 'config/database.php';
 
 // Include helpers & start session
 require_once 'helpers/session_helper.php';
+require_once 'helpers/url_helper.php';
 
 // Include core libraries
 spl_autoload_register(function($class) {
