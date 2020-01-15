@@ -28,7 +28,7 @@ class Router {
 
         // TODO now default method works even if controller is not Pages, it may be not secure in some cases
         // Check if url contains second value
-        if ($url[1]) {
+        if (isset($url[1])) {
             // Check if method exists in controller
             if (method_exists($this->controller, $url[1])) {
                 // if exists, set as method
