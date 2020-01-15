@@ -34,6 +34,24 @@ class User {
         }
     }
 
+
+    public function login($email, $password) {
+        // Sql query
+        $this->db->query('SELECT * FROM users WHERE email = :email');
+        // Bind value
+        $this->db->bind(':email', $email);
+
+        // Get table row
+        $row = $this->db->single();
+
+        $hashedPassword = $row->password;
+        if (password_verify($hashedPassword, $password)) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
+
     // Check if email exists
     public function findUserByEmail($email) : bool {
 
