@@ -11,7 +11,7 @@ class Users extends Controller
     private $currentModel;
 
     public function __construct() {
-//        $this->currentModel = $this->model('User');
+        $this->currentModel = $this->model('User');
     }
 
     public function register($data = []) {
@@ -35,7 +35,9 @@ class Users extends Controller
             // Check email
             if (empty($data['email'])) {
                 $data['email_err'] = 'Please fill email field';
-            }     // TODO Check if email already exists
+            } elseif ($this->currentModel->findUserByEmail($data['email'])) {
+                $data['email_err'] = 'This email is already used, please fill another one';
+            }
 
             // Check name
             if (empty($data['name'])) {
@@ -56,8 +58,21 @@ class Users extends Controller
                 $data['confirm_password_err'] = 'Passwords do not match';
             }
 
-            //
-//            var_dump($data);
+            // Check for no errors found
+            if(empty($data['email_err']) && empty($data['name_err']) && empty($data['password_err']) && empty($data['confirm_password_err'])) {
+
+                // Hash Password
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+
+                // Register User
+                if ($this->currentModel->register($data)) {
+                    flash('register_success', 'You are registered and can log in');
+                    die('SUCCESS');
+//                    redirect('users/login');
+                } else {
+                    die('Something went wrong');
+                }
+            }
         } else {
             $data =[
                 'name' => '',
