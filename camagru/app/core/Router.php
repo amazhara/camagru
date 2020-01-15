@@ -4,14 +4,16 @@
  * Router takes request and cuts it in Controller -> Action (Method)
  * example /user/login is cut to User -> login
  */
-
+// TODO fix error when using existing controller and wrong method (ex. users/aaa)
 class Router {
     protected $controller = 'Pages';
     protected $method = 'index';
     protected $params = [];
 
     public function __construct() {
+
         $url = $this->getUrl();
+
         // check if first value is valid controller
         if (file_exists('../app/controllers/' . ucwords($url[0]) . '.php')) {
             // If exists, set as controller

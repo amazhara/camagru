@@ -4,7 +4,7 @@
  * User option controller
  * Loads Users model and view
  */
-
+// TODO make js script to remove error on click
 class Users extends Controller
 {
     // To hold loaded model
@@ -21,7 +21,7 @@ class Users extends Controller
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             // Convert data in array
-            $data =[
+            $data = [
                 'name' => trim($_POST['name']),
                 'email' => trim($_POST['email']),
                 'password' => trim($_POST['password']),
@@ -47,7 +47,7 @@ class Users extends Controller
             // Check password
             if (empty($data['password'])) {
                 $data['password_err'] = 'Please fill password field';
-            } elseif (strlen($data['password']) < 6){
+            } elseif (strlen($data['password']) < 6) {
                 $data['password_err'] = 'Password must be at least 6 characters';
             }
 
@@ -67,9 +67,9 @@ class Users extends Controller
                 // Register User
                 if ($this->currentModel->register($data)) {
                     flash('register_success', 'You are registered and can log in');
-                    die('SUCCESS');
-//                    redirect('users/login');
+                    redirect('users/login');
                 } else {
+                    // TODO same problem with 404 error (search for all dies and fix)
                     die('Something went wrong');
                 }
             }
@@ -86,5 +86,74 @@ class Users extends Controller
             ];
         }
         $this->view('users/register', $data);
+    }
+
+    public function login($data = []) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            // Sanitize post array
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+            // Convert data in array
+            $data = [
+              'email' => trim($_POST['email']),
+              'password' => trim($_POST['password']),
+              'email_err' => '',
+              'password_err' => ''
+            ];
+
+            // Check for email
+            if (empty($data['email'])) {
+                $data['email_err'] = 'Please enter email';
+            } elseif ($this->currentModel->findUserByEmail($data['email']) == false) {
+                $data['email_err'] = 'Email not found';
+            }
+
+            // Check for password
+            if (empty($data['password'])) {
+                $data['password'] = 'Please enter your password';
+            }
+
+            // If no errors found
+            if (empty($data['email_err']) && empty($data['password_err'])) {
+                // Search for user
+                $user = $this->currentModel->login($data['email'], $data['password']);
+
+                // Check if password is correct and create session
+                if ($user) {
+                    $this->createUserSession($user);
+                } else {
+                    $data['email_err'] = 'Wrong password';
+                }
+            }
+
+        } else {
+            $data = [
+                'email' => '',
+                'password' => '',
+                'name_error' => '',
+                'password_err' => ''
+            ];
+        }
+        var_dump($data);
+        $this->view('users/login', $data);
+    }
+
+    public function createUserSession($user){
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_email'] = $user->email;
+        $_SESSION['user_name'] = $user->name;
+
+//        redirect('posts');
+//        redirect('');
+        die('You\'re logged in');
+    }
+
+    public function logout(){
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_email']);
+        unset($_SESSION['user_name']);
+        session_destroy();
+        redirect('users/login');
     }
 }
