@@ -17,7 +17,17 @@ $init = new Router;
 
 
 
-// TODO add User controller model and view functional
-// TODO User registration
-// TODO User login
+
+
+
+
+// TODO create photo logic and view
+// TODO post photo
+// TODO comment posts
+// TODO like posts
+// TODO make notifications by email when register
+// TODO make notifications when comment photo
 // TODO User change password
+// TODO User change email
+// TODO User change name
+// TODO User on/off notification via email
