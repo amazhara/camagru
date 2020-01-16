@@ -123,7 +123,7 @@ class Users extends Controller
                 if ($user) {
                     $this->createUserSession($user);
                 } else {
-                    $data['email_err'] = 'Wrong password';
+                    $data['email_err'] = 'No such email found';
                 }
             }
 
@@ -135,24 +135,25 @@ class Users extends Controller
                 'password_err' => ''
             ];
         }
-        var_dump($data);
         $this->view('users/login', $data);
     }
 
-    public function createUserSession($user){
+    public function createUserSession($user) {
+        // Save user info in session
         $_SESSION['user_id'] = $user->id;
         $_SESSION['user_email'] = $user->email;
         $_SESSION['user_name'] = $user->name;
 
 //        redirect('posts');
-//        redirect('');
         die('You\'re logged in');
     }
 
-    public function logout(){
+    public function logout() {
+        // Delete user info from session
         unset($_SESSION['user_id']);
         unset($_SESSION['user_email']);
         unset($_SESSION['user_name']);
+        // Destroy session
         session_destroy();
         redirect('users/login');
     }

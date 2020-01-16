@@ -46,7 +46,7 @@ class User {
 
         // Check if db return raw
         $hashedPassword = $row ? $row->password : false;
-        if (password_verify($hashedPassword, $password)) {
+        if (password_verify($password, $hashedPassword)) {
             return $row;
         } else {
             return false;
