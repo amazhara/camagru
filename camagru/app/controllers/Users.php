@@ -15,6 +15,10 @@ class Users extends Controller
     }
 
     public function register($data = []) {
+        // Check if user is already logged in
+        if (isLoggedIn()) {
+            redirect('pages/index');
+        }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Filter post request
@@ -89,6 +93,10 @@ class Users extends Controller
     }
 
     public function login($data = []) {
+        // Check if user is already logged in
+        if (isLoggedIn()) {
+            redirect('pages/index');
+        }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Sanitize post array
@@ -144,8 +152,8 @@ class Users extends Controller
         $_SESSION['user_email'] = $user->email;
         $_SESSION['user_name'] = $user->name;
 
-//        redirect('posts');
-        die('You\'re logged in');
+        redirect('pages/index');
+//        die('You\'re logged in');
     }
 
     public function logout() {
