@@ -17,7 +17,7 @@ class Users extends Controller
     public function register($data = []) {
         // Check if user is already logged in
         if (isLoggedIn()) {
-            redirect('pages/index');
+            redirect('/pages/index');
         }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -95,7 +95,7 @@ class Users extends Controller
     public function login($data = []) {
         // Check if user is already logged in
         if (isLoggedIn()) {
-            redirect('pages/index');
+            redirect('/pages/index');
         }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
