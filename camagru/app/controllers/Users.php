@@ -71,7 +71,7 @@ class Users extends Controller
                 // Register User
                 if ($this->currentModel->register($data)) {
                     flash('register_success', 'You are registered and can log in');
-                    redirect('users/login');
+                    redirect('/users/login');
                 } else {
                     // TODO same problem with 404 error (search for all dies and fix)
                     die('Something went wrong');
@@ -152,7 +152,7 @@ class Users extends Controller
         $_SESSION['user_email'] = $user->email;
         $_SESSION['user_name'] = $user->name;
 
-        redirect('pages/index');
+        redirect('/pages/index');
 //        die('You\'re logged in');
     }
 
@@ -163,6 +163,6 @@ class Users extends Controller
         unset($_SESSION['user_name']);
         // Destroy session
         session_destroy();
-        redirect('users/login');
+        redirect('/users/login');
     }
 }
