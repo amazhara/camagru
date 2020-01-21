@@ -78,7 +78,7 @@ class Users extends Controller
                 }
             }
         } else {
-            $data =[
+            $data = [
                 'name' => '',
                 'email' => '',
                 'password' => '',
@@ -151,9 +151,7 @@ class Users extends Controller
         $_SESSION['user_id'] = $user->id;
         $_SESSION['user_email'] = $user->email;
         $_SESSION['user_name'] = $user->name;
-
         redirect('/pages/index');
-//        die('You\'re logged in');
     }
 
     public function logout() {

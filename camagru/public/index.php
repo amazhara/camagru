@@ -31,3 +31,4 @@ $init = new Router;
 // TODO User change email
 // TODO User change name
 // TODO User on/off notification via email
+// TODO Write about browser compatibility

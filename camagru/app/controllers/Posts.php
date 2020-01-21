@@ -1,8 +1,13 @@
 <?php
 
 /*
- *
+ * Posts controller
+ * Snap photos
+ * Add posts
+ * Comment posts
+ * Like posts
  */
+
 class Posts extends Controller {
 
     private $userModel;
@@ -12,10 +17,11 @@ class Posts extends Controller {
     }
 
     function add($data = []) {
-        $data = [
-            'title' => '',
-            'body' => ''
-        ];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            var_dump($_POST);
+            echo '<br>';
+            var_dump($_FILES);
+        }
         $this->view('posts/add');
     }
 }
