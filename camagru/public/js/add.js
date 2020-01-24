@@ -8,11 +8,6 @@ let streaming = false;
 
 let video = document.getElementById('video');
 let canvas = document.getElementById('canvas');
-let photo = document.getElementById('photo');
-let button = document.getElementById('snap');
-let link = document.getElementById('link');
-let push = document.getElementById('push');
-let form = document.getElementById('form');
 
 // Get access to the camera!
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -42,8 +37,6 @@ video.addEventListener('canplay', function () {
 
 document.getElementById("snap").addEventListener('click', function () {
     takePicture();
-    push.value = canvas.toDataURL();
-    form.submit();
 });
 
 // Fetch (ajax) image to php

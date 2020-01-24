@@ -8,10 +8,10 @@
 class Users extends Controller
 {
     // To hold loaded model
-    private $currentModel;
+    private $userModel;
 
     public function __construct() {
-        $this->currentModel = $this->model('User');
+        $this->userModel = $this->model('User');
     }
 
     public function register($data = []) {
@@ -39,7 +39,7 @@ class Users extends Controller
             // Check email
             if (empty($data['email'])) {
                 $data['email_err'] = 'Please fill email field';
-            } elseif ($this->currentModel->findUserByEmail($data['email'])) {
+            } elseif ($this->userModel->findUserByEmail($data['email'])) {
                 $data['email_err'] = 'This email is already used, please fill another one';
             }
 
@@ -69,7 +69,7 @@ class Users extends Controller
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
                 // Register User
-                if ($this->currentModel->register($data)) {
+                if ($this->userModel->register($data)) {
                     flash('register_success', 'You are registered and can log in');
                     redirect('/users/login');
                 } else {
@@ -113,7 +113,7 @@ class Users extends Controller
             // Check for email
             if (empty($data['email'])) {
                 $data['email_err'] = 'Please enter email';
-            } elseif ($this->currentModel->findUserByEmail($data['email']) == false) {
+            } elseif ($this->userModel->findUserByEmail($data['email']) == false) {
                 $data['email_err'] = 'Email not found';
             }
 
@@ -125,7 +125,7 @@ class Users extends Controller
             // If no errors found
             if (empty($data['email_err']) && empty($data['password_err'])) {
                 // Search for user
-                $user = $this->currentModel->login($data['email'], $data['password']);
+                $user = $this->userModel->login($data['email'], $data['password']);
 
                 // Check if password is correct and create session
                 if ($user) {
