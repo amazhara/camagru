@@ -21,8 +21,13 @@ class Posts extends Controller
 
     public function add()
     {
+        // Check if user logged in
+        if (isLoggedIn() == false) {
+            flash('login_to_post', 'Please, login to create post');
+            redirect('/users/login');
+        }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            var_dump($_POST);
+
             exit;
         }
         $this->view('posts/add');

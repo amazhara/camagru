@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body">
                 <img id="image" class="img-fluid" alt="Your photo" src="">
-<!--                <input type="text" name="body" class="form-control" value="Your comment">-->
+                <input type="text" id="body" class="form-control" value="Your comment">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Take another</button>
@@ -28,7 +28,8 @@
     <div class="card-body camera">
         <h2 class="card-title text-center">Snap Photo</h2>
         <video class="card-img-top" id="video" autoplay>Video stream not available.</video>
-        <button id="snap" class="btn btn-primary float-right" data-toggle="modal" data-target="#Modal">Snap Photo</button>
+        <button id="snap" class="btn btn-primary float-right" data-toggle="modal" data-target="#Modal">Snap Photo
+        </button>
     </div>
 </div>
 
@@ -76,19 +77,31 @@
         image.setAttribute('src', canvas.toDataURL());
     });
 
-    document.getElementById('send').addEventListener('click', async function () {
+    document.getElementById('send').addEventListener('click', function () {
+        let body = document.getElementById('body');
 
-        let blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        // Check if user entered comment
+        // if (body.value === 'Your comment') {
+        //     alert('Please enter your comment!');
+        //     return;
+        // }
 
-        // Send photo
-        let response = await fetch('http://localhost:8080/posts/add', {
-            method: 'POST',
-            body: blob
-        });
+        // Create form to send
+        let form = new FormData;
 
-        // Wait for response from php
-        let result = await response.text();
+        canvas.toBlob(function (blob) {
+            form.append('file', blob, 'photo');
+            form.append('body', body.value);
+            console.log(form.get('body'));
+            console.log(form.get('file'));
 
+            let response = fetch('<?php echo URLROOT; ?>/posts/add', {
+                method: 'POST',
+                body: form
+            }).then(response => response.ok)
+                .then(response => console.log(response))
+
+        }, 'image/png');
     });
     // Fetch (ajax) image to php
     // document.getElementById("snap").addEventListener('click', async function () {
