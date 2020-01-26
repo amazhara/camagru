@@ -14,6 +14,49 @@ class Posts extends Controller
     private $userModel;
     private $postModel;
 
+    public function __construct()
+    {
+        $this->userModel = $this->model('User');
+        $this->postModel = $this->model('Post');
+    }
+
+    public function add()
+    {
+        // Check if user logged in
+        if (isLoggedIn() == false) {
+            flash('login_to_post', 'Please, login to create post');
+            redirect('/users/login');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            // Sanitize array
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+
+            $data = [
+                // Get photo id
+                'photo' => $this->uploadImage($_FILES['photo']),
+                'body' => trim($_POST['body']),
+                'user_id' => $_SESSION['user_id']
+            ];
+
+            if (!empty($data['photo']) && !empty($data['body']) && !empty('user_id')) {
+                // Call model
+                if ($this->postModel->add($data)) {
+                    // Success answer to js
+                    echo 'success';
+                } else {
+                    // Failed answer to js
+                    echo 'failed';
+                }
+            }
+
+        } else {
+            $this->view('posts/add');
+        }
+    }
+
     private function uploadImage($image): string
     {
         // Get photo extension
@@ -24,46 +67,13 @@ class Posts extends Controller
         $dest = APPROOT . '/data';
 
         if (!file_exists($dest)) {
-            // TODO give rights to mkdir, currently not working
             mkdir($dest, 0755, true);
         }
 
         // Upload on server
         move_uploaded_file($image['tmp_name'], $dest . '/' . $filename);
 
-        var_dump($dest . '/' . $filename);
-
         return $filename;
-    }
-
-    public function __construct()
-    {
-        $this->userModel = $this->model('User');
-    }
-
-    public function add()
-    {
-        // Check if user logged in
-        if (isLoggedIn() == false) {
-            flash('login_to_post', 'Please, login to create post');
-            redirect('/users/login');
-        }
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-            // Sanitize array
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-
-            $data = [
-                'photo' => $this->uploadImage($_FILES['photo']),
-                'body' => trim($_POST['body']),
-                'user_id' => $_SESSION['user_id']
-            ];
-
-
-            exit;
-        }
-        $this->view('posts/add');
     }
 }
 

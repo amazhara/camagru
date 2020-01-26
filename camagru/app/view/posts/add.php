@@ -90,16 +90,19 @@
         let form = new FormData;
 
         canvas.toBlob(function (blob) {
+            // Add photo to form
             form.append('photo', blob, 'photo.png');
+            // Add body to form
             form.append('body', body.value);
-            console.log(form.get('body'));
-            console.log(form.get('photo'));
+            // console.log(form.get('body'));
+            // console.log(form.get('photo'));
 
             let response = fetch('<?php echo URLROOT; ?>/posts/add', {
                 method: 'POST',
                 body: form
             }).then(response => response.text())
                 .then(response => console.log(response))
+                .then(response => window.location.replace('<?php echo URLROOT; ?>'))
 
         }, 'image/png');
     });
