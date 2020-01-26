@@ -34,7 +34,7 @@
 </div>
 
 <script>
-    let width = 640;  // We will scale the photo width to this
+    let width = 640;  // Scale the photo width to this
     let height = 0;   // This will be computed based on the input stream
 
     // indicates whether or not we're currently streaming
@@ -90,42 +90,19 @@
         let form = new FormData;
 
         canvas.toBlob(function (blob) {
-            form.append('file', blob, 'photo');
+            form.append('photo', blob, 'photo.png');
             form.append('body', body.value);
             console.log(form.get('body'));
-            console.log(form.get('file'));
+            console.log(form.get('photo'));
 
             let response = fetch('<?php echo URLROOT; ?>/posts/add', {
                 method: 'POST',
                 body: form
-            }).then(response => response.ok)
+            }).then(response => response.text())
                 .then(response => console.log(response))
 
         }, 'image/png');
     });
-    // Fetch (ajax) image to php
-    // document.getElementById("snap").addEventListener('click', async function () {
-    //     takePicture();
-    //     // Create blob instance to send photo
-    //     let blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-    //
-    //     // Send photo
-    //     let response = await fetch('http://localhost:8080/posts/add', {
-    //         method: 'POST',
-    //         body: blob
-    //     });
-    //
-    //     // Wait for response from php
-    //     let result = await response.text();
-    //
-    //     // window.location = "http://localhost:8080/posts/add";
-    //     // Convert blob to png
-    //     // result = result.slice(0, blob.size, 'image/png');
-    //
-    //     console.log(result);
-    //     // link.href = URL.createObjectURL(result);
-    //     // console.log(link);
-    // });
 
     function takePicture() {
         const context = canvas.getContext('2d');

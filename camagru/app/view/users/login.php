@@ -22,7 +22,7 @@
                         <input type="submit" value="Login" class="btn btn-success btn-block">
                     </div>
                     <div class="col">
-                        <a href="<?php echo URLROOT; ?>users/register" class="btn btn-light btn-block">No account? Register</a>
+                        <a href="<?php echo URLROOT; ?>/users/register" class="btn btn-light btn-block">No account? Register</a>
                     </div>
                 </div>
             </form>
