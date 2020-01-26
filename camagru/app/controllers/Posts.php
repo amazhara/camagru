@@ -20,6 +20,26 @@ class Posts extends Controller
         $this->postModel = $this->model('Post');
     }
 
+    public function index() {
+        // User must log in to see posts
+        if (!isLoggedIn()) {
+            flash('login_to_see_posts', 'Please, login to see posts list');
+            redirect('/users/login');
+        }
+
+        $posts = $this->postModel->getPosts();
+
+        $data = [
+            'posts' => $posts
+        ];
+
+//        header('Content-Type:text/plain');
+//        foreach ($data['posts'] as $post) {
+//            echo ;
+//        }
+//        $this->view('posts/index', $data);
+    }
+
     public function add()
     {
         // Check if user logged in
