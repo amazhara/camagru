@@ -24,15 +24,14 @@ class Posts extends Controller
         $dest = APPROOT . '/data';
 
         if (!file_exists($dest)) {
-            echo $dest;
             // TODO give rights to mkdir, currently not working
-            mkdir($dest, 755, true);
+            mkdir($dest, 0755, true);
         }
 
-        echo getcwd();
-
         // Upload on server
-        move_uploaded_file($image['tmp_name'], '../app/data/' . $filename);
+        move_uploaded_file($image['tmp_name'], $dest . '/' . $filename);
+
+        var_dump($dest . '/' . $filename);
 
         return $filename;
     }
