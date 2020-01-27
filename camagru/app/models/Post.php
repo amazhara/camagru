@@ -47,6 +47,39 @@ class Post
         }
     }
 
+    public function like($data) : bool {
+        // Prepare query
+        $this->db->query('INSERT INTO likes (user_id, post_id) VALUES (:user_id, :post_id)');
+        // Bind values
+        $this->db->bind(':user_id', $data['user_id']);
+        $this->db->bind(':post_id', $data['post_id']);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function findLikesByUserId($id) {
+        $this->db->query('SELECT * FROM likes where user_id = :id');
+        $this->db->bind(':id', $id);
+
+        $likes = $this->db->resultSet();
+        return $likes;
+    }
+
+    public function deleteLikeById($id) {
+        $this->db->query('DELETE * FROM likes where id = :id');
+        $this->db->bind(':id', $id);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function findPostById($id) {
         $this->db->query('SELECT * FROM posts where id = :id');
         $this->db->bind(':id', $id);
