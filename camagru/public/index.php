@@ -16,11 +16,6 @@ $init = new Router;
 
 
 
-
-
-
-
-
 // TODO comment posts
 // TODO like posts
 // TODO make notifications by email when register
@@ -29,4 +24,5 @@ $init = new Router;
 // TODO User change email
 // TODO User change name
 // TODO User on/off notification via email
+// TODO Image masks
 // TODO Write about browser compatibility

@@ -23,11 +23,23 @@ class Posts extends Controller
     public function index() {
         // User must log in to see posts
         if (!isLoggedIn()) {
-            flash('login_to_see_posts', 'Please, login to see posts list');
+            flash('login_to_post', 'Please, login to see posts list');
             redirect('/users/login');
         }
 
         $posts = $this->postModel->getPosts();
+
+        // Check whether user like some post
+        foreach ($posts as $post) {
+            $likes = $this->postModel->findLikesByPostId($post->postId);
+
+            foreach ($likes as $like) {
+                if ($like->user_id === $_SESSION['user_id']) {
+                    // Add field with likes
+                    $post->isLiked = true;
+                }
+            }
+        }
 
         $data = [
             'posts' => $posts
@@ -70,6 +82,49 @@ class Posts extends Controller
 
         } else {
             $this->view('posts/add');
+        }
+    }
+
+    public function like()
+    {
+        // Check if user logged in
+        if (isLoggedIn() == false) {
+            flash('login_to_post', 'Please, login to like post');
+            redirect('/users/login');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+
+            // Sanitize array
+            $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
+
+            $data = [
+                'user_id' => $_SESSION['user_id'],
+                'post_id' => trim($_GET['id'])
+            ];
+
+            // Check if get request is correct
+            if (!empty($data['post_id']) && !empty($data['user_id'])) {
+
+                $post = $this->postModel->findPostById($data['post_id']);
+                $user = $this->userModel->findUserById($data['user_id']);
+
+                if ($post && $user) {
+                    $likes = $this->postModel->findLikesByUserId($data['user_id']);
+
+                    foreach ($likes as $like) {
+                        if ($like->post_id === $data['post_id']) {
+                            // Delete like if user pressed button twice
+                            $this->postModel->deleteLikeById($like->id);
+                            redirect('/posts');
+                            exit;
+                        }
+                    }
+
+                    $this->postModel->like($data);
+                }
+            }
+            redirect('/posts');
         }
     }
 
