@@ -7,6 +7,9 @@
  * Search for posts
  * Delete posts
  * Return posts
+ * Set likes
+ * Delete likes
+ * Update likes
  */
 
 class Post
@@ -61,6 +64,23 @@ class Post
         }
     }
 
+    public function postUpdateLikesCount($id) : bool {
+        // Get new likes count
+        $likes_count = $this->getLikesCountByPostId($id);
+
+        // Prepare statement
+        $this->db->query('UPDATE posts SET likes_count = :likes_count WHERE id = :id');
+        // Bind values
+        $this->db->bind(':likes_count', $likes_count);
+        $this->db->bind(':id', $id);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function findLikesByUserId($id) {
         $this->db->query('SELECT * FROM likes where user_id = :id');
         $this->db->bind(':id', $id);
@@ -75,6 +95,14 @@ class Post
 
         $likes = $this->db->resultSet();
         return $likes;
+    }
+
+    public function getLikesCountByPostId($id) : int {
+        $this->db->query('SELECT * FROM likes where post_id = :id');
+        $this->db->bind(':id', $id);
+
+        $count = $this->db->rowCount();
+        return $count;
     }
 
     public function deleteLikeById($id) : bool {

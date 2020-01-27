@@ -83,6 +83,7 @@ class Database {
 
     // Ger row count
     public function rowCount() {
+        $this->execute();
         return $this->stmt->rowCount();
     }
 }
