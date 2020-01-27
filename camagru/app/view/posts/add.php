@@ -81,10 +81,10 @@
         let body = document.getElementById('body');
 
         // Check if user entered comment
-        // if (body.value === 'Your comment') {
-        //     alert('Please enter your comment!');
-        //     return;
-        // }
+        if (body.value === 'Your comment') {
+            alert('Please enter your comment!');
+            return;
+        }
 
         // Create form to send
         let form = new FormData;
@@ -102,7 +102,7 @@
                 body: form
             }).then(response => response.text())
                 // .then(response => console.log(response))
-                .then(response => window.location.replace('<?php echo URLROOT; ?>'))
+                .then(response => window.location.replace('<?php echo URLROOT; ?>/posts'))
 
         }, 'image/png');
     });

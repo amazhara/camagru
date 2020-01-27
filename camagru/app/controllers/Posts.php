@@ -21,12 +21,7 @@ class Posts extends Controller
     }
 
     public function index() {
-        // User must log in to see posts
-        if (!isLoggedIn()) {
-            flash('login_to_post', 'Please, login to see posts list');
-            redirect('/users/login');
-        }
-
+        // Get all posts info from model
         $posts = $this->postModel->getPosts();
 
         // Check whether user like some post
@@ -45,7 +40,14 @@ class Posts extends Controller
             'posts' => $posts
         ];
 
+        // TODO make view responsive
         $this->view('posts/index', $data);
+    }
+
+    public function show() {
+        // TODO add alert login to comment
+        $data = [];
+        $this->view('posts/show', $data);
     }
 
     public function add()
@@ -116,12 +118,14 @@ class Posts extends Controller
                         if ($like->post_id === $data['post_id']) {
                             // Delete like if user pressed button twice
                             $this->postModel->deleteLikeById($like->id);
+                            $this->postModel->postUpdateLikesCount($data['post_id']);
                             redirect('/posts');
                             exit;
                         }
                     }
 
                     $this->postModel->like($data);
+                    $this->postModel->postUpdateLikesCount($data['post_id']);
                 }
             }
             redirect('/posts');

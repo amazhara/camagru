@@ -25,10 +25,12 @@
             <img src="https://www.transparentpng.com/thumb/instagram-heart/DlYWow-instagram-heart-hd-image.png" style="width: 50px; height: 50px;">
             <?php else : ?>
             <img src="https://www.transparentpng.com/thumb/instagram-heart/OtpLVC-heart-shaped-instagram-transparent-image.png" style="width: 50px; height: 50px;">
-
             <?php endif; ?>
         </a>
-        <a href="<?php echo URLROOT; ?>/posts/show/?id=<?php echo $post->postId; ?>" class="btn btn-dark">More</a>
+        <p class="card-text">
+            <?php echo 'Total likes: ' . $post->likes_count; ?>
+        </p>
+        <a href="<?php echo URLROOT; ?>/posts/show/?id=<?php echo $post->postId; ?>" class="btn btn-dark">Comments</a>
     </div>
 <?php endforeach; ?>
 
