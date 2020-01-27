@@ -81,7 +81,7 @@ class Post
         }
     }
 
-    public function findLikesByUserId($id) {
+    public function getLikesByUserId($id) {
         $this->db->query('SELECT * FROM likes where user_id = :id');
         $this->db->bind(':id', $id);
 
@@ -89,7 +89,7 @@ class Post
         return $likes;
     }
 
-    public function findLikesByPostId($id) {
+    public function getLikesByPostId($id) {
         $this->db->query('SELECT * FROM likes where post_id = :id');
         $this->db->bind(':id', $id);
 
@@ -116,7 +116,7 @@ class Post
         }
     }
 
-    public function findPostById($id) {
+    public function getPostById($id) {
         $this->db->query('SELECT * FROM posts where id = :id');
         $this->db->bind(':id', $id);
 
