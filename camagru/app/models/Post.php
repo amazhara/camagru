@@ -69,8 +69,16 @@ class Post
         return $likes;
     }
 
-    public function deleteLikeById($id) {
-        $this->db->query('DELETE * FROM likes where id = :id');
+    public function findLikesByPostId($id) {
+        $this->db->query('SELECT * FROM likes where post_id = :id');
+        $this->db->bind(':id', $id);
+
+        $likes = $this->db->resultSet();
+        return $likes;
+    }
+
+    public function deleteLikeById($id) : bool {
+        $this->db->query('DELETE FROM likes where id = :id');
         $this->db->bind(':id', $id);
 
         if ($this->db->execute()) {
@@ -89,7 +97,7 @@ class Post
     }
 
     public function deletePostById($id) : bool {
-        $this->db->query('DELETE * FROM posts where id = :id');
+        $this->db->query('DELETE FROM posts where id = :id');
         $this->db->bind(':id', $id);
 
         if ($this->db->execute()) {
