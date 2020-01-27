@@ -33,11 +33,7 @@ class Posts extends Controller
             'posts' => $posts
         ];
 
-//        header('Content-Type:text/plain');
-//        foreach ($data['posts'] as $post) {
-//            echo ;
-//        }
-//        $this->view('posts/index', $data);
+        $this->view('posts/index', $data);
     }
 
     public function add()
@@ -84,7 +80,7 @@ class Posts extends Controller
         // Generate file name
         $filename = uniqid() . '.' . $extension;
 
-        $dest = APPROOT . '/data';
+        $dest = dirname(APPROOT) . '/public' . '/data';
 
         if (!file_exists($dest)) {
             mkdir($dest, 0755, true);

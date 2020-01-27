@@ -101,7 +101,7 @@
                 method: 'POST',
                 body: form
             }).then(response => response.text())
-                .then(response => console.log(response))
+                // .then(response => console.log(response))
                 .then(response => window.location.replace('<?php echo URLROOT; ?>'))
 
         }, 'image/png');
