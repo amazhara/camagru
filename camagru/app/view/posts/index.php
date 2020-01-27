@@ -25,4 +25,3 @@
 <?php endforeach; ?>
 
 <?php require APPROOT . '/view/include/footer.php'; ?>
-
