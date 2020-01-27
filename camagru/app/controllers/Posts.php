@@ -92,5 +92,3 @@ class Posts extends Controller
         return $filename;
     }
 }
-
-// TODO add session control

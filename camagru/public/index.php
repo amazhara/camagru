@@ -21,8 +21,6 @@ $init = new Router;
 
 
 
-// TODO create photo logic and view
-// TODO post photo
 // TODO comment posts
 // TODO like posts
 // TODO make notifications by email when register
