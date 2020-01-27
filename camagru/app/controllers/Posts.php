@@ -26,7 +26,7 @@ class Posts extends Controller
 
         // Check whether user like some post
         foreach ($posts as $post) {
-            $likes = $this->postModel->findLikesByPostId($post->postId);
+            $likes = $this->postModel->getLikesByPostId($post->postId);
 
             foreach ($likes as $like) {
                 if ($like->user_id === $_SESSION['user_id']) {
@@ -44,9 +44,18 @@ class Posts extends Controller
         $this->view('posts/index', $data);
     }
 
-    public function show() {
+    public function show($id) {
         // TODO add alert login to comment
-        $data = [];
+        // TODO comments will place here
+        $post = $this->postModel->getPostById($id);
+        $user = $this->userModel->getUserById($post->user_id);
+
+        $data = [
+            'post' => $post,
+            'user' => $user
+        ];
+
+//        var_dump($data);
         $this->view('posts/show', $data);
     }
 
@@ -108,11 +117,11 @@ class Posts extends Controller
             // Check if get request is correct
             if (!empty($data['post_id']) && !empty($data['user_id'])) {
 
-                $post = $this->postModel->findPostById($data['post_id']);
-                $user = $this->userModel->findUserById($data['user_id']);
+                $post = $this->postModel->getPostById($data['post_id']);
+                $user = $this->userModel->getUserById($data['user_id']);
 
                 if ($post && $user) {
-                    $likes = $this->postModel->findLikesByUserId($data['user_id']);
+                    $likes = $this->postModel->getLikesByUserId($data['user_id']);
 
                     foreach ($likes as $like) {
                         if ($like->post_id === $data['post_id']) {
