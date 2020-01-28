@@ -7,12 +7,15 @@
         <?php echo $data['post']->body; ?>
     </p>
 </div>
-<?php if($data['post']->user_id == $_SESSION['user_id']) : ?>
+<?php if ($data['post']->user_id == $_SESSION['user_id']) : ?>
 
-<div class="form-group">
-    <label for="Body">Write comment to post</label>
-    <input type="text" class="form-control" id="Body">
-</div>
+    <form action="<?php echo URLROOT; ?>/posts/comment">
+        <div class="form-group">
+            <label for="Body">Write comment to post</label>
+            <input type="text" class="form-control" id="Body">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 
 <?php endif; ?>
 

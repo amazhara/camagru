@@ -28,6 +28,9 @@ class Database {
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ];
 
+        // Create db and all tables
+//        $this->prepare($options);
+
         // Connect to db and create PDO instance
         try {
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
@@ -85,5 +88,14 @@ class Database {
     public function rowCount() {
         $this->execute();
         return $this->stmt->rowCount();
+    }
+
+    private function prepare($options) {
+        try {
+            $dbh_tmp = new PDO("mysql:host=localhost", $this->user, $this->pass, $options);
+        } catch (PDOException $e) {
+            $this->error = $e->getMessage();
+            echo $this->error;
+        }
     }
 }

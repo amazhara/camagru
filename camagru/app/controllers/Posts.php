@@ -44,7 +44,7 @@ class Posts extends Controller
         $this->view('posts/index', $data);
     }
 
-    public function comment($id) {
+    public function show($id) {
         // TODO add alert login to comment
         // TODO comments will place here
         $post = $this->postModel->getPostById($id);
@@ -55,7 +55,7 @@ class Posts extends Controller
             'user' => $user
         ];
 //        var_dump($data);
-        $this->view('posts/comment', $data);
+        $this->view('posts/view', $data);
     }
 
     public function add()
