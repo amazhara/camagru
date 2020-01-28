@@ -30,7 +30,7 @@
         <p class="card-text">
             <?php echo 'Total likes: ' . $post->likes_count; ?>
         </p>
-        <a href="<?php echo URLROOT; ?>/posts/show/<?php echo $post->postId; ?>" class="btn btn-dark">Comments</a>
+        <a href="<?php echo URLROOT; ?>/posts/comment/<?php echo $post->postId; ?>" class="btn btn-dark">Comments</a>
     </div>
 <?php endforeach; ?>
 

@@ -44,7 +44,7 @@ class Posts extends Controller
         $this->view('posts/index', $data);
     }
 
-    public function show($id) {
+    public function comment($id) {
         // TODO add alert login to comment
         // TODO comments will place here
         $post = $this->postModel->getPostById($id);
@@ -54,9 +54,8 @@ class Posts extends Controller
             'post' => $post,
             'user' => $user
         ];
-
 //        var_dump($data);
-        $this->view('posts/show', $data);
+        $this->view('posts/comment', $data);
     }
 
     public function add()
@@ -71,7 +70,6 @@ class Posts extends Controller
 
             // Sanitize array
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
 
             $data = [
                 // Get photo id
