@@ -64,6 +64,30 @@ class Post
         }
     }
 
+    public function comment($data) : bool {
+        // Prepare query
+        $this->db->query('INSERT INTO comments (body, user_id, post_id, user_name) VALUES (:body, :user_id, :post_id, :user_name)');
+        // Bind values
+        $this->db->bind(':user_id', $data['user_id']);
+        $this->db->bind(':post_id', $data['post_id']);
+        $this->db->bind(':user_name', $data['user_name']);
+        $this->db->bind(':body', $data['body']);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getCommentsByPostId($id) {
+        $this->db->query('SELECT * FROM comments where post_id = :id ORDER BY comments.created_at DESC');
+        $this->db->bind(':id', $id);
+
+        $comments = $this->db->resultSet();
+        return $comments;
+    }
+
     public function postUpdateLikesCount($id) : bool {
         // Get new likes count
         $likes_count = $this->getLikesCountByPostId($id);

@@ -46,16 +46,45 @@ class Posts extends Controller
 
     public function show($id) {
         // TODO add alert login to comment
-        // TODO comments will place here
         $post = $this->postModel->getPostById($id);
         $user = $this->userModel->getUserById($post->user_id);
+        $comments = $this->postModel->getCommentsByPostId($id);
 
         $data = [
             'post' => $post,
-            'user' => $user
+            'user' => $user,
+            'comments' => $comments
         ];
 //        var_dump($data);
-        $this->view('posts/view', $data);
+        $this->view('posts/show', $data);
+    }
+
+    public function comment() {
+        // Check if user logged in
+        if (isLoggedIn() == false) {
+            flash('login_to_post', 'Please, login to comment');
+            redirect('/users/login');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            // Sanitize array
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+            $data = [
+              'body' => trim($_POST['body']),
+              'post_id' => trim($_POST['post_id']),
+              'user_id' => $_SESSION['user_id'],
+              'user_name' => $this->userModel->getUserById($_SESSION['user_id'])->name
+            ];
+
+            if (!empty($data['body']) && !empty($data['post_id']) && !empty($data['user_id']) && !empty($data['user_name'])) {
+                // Save comment
+                $this->postModel->comment($data);
+            }
+            redirect('/posts/show/' . $_POST['post_id']);
+        }
+
     }
 
     public function add()

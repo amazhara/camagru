@@ -12,7 +12,7 @@
         </div>
     </div>
 <?php foreach($data['posts'] as $post) :?>
-    <div class="card card-body mx-auto" style="width: 620px">
+    <div class="card card-body mx-auto mt-5" style="width: 620px">
         <img alt="Post photo" class="card-img-top" src="<?php echo URLROOT . '/public/data/' . $post->photo ?>">
         <div class="bg-light p-2 mb-3">
             written by <?php echo $post->name; ?> on <?php echo $post->postCreated; ?>
@@ -30,7 +30,7 @@
         <p class="card-text">
             <?php echo 'Total likes: ' . $post->likes_count; ?>
         </p>
-        <a href="<?php echo URLROOT; ?>/posts/view/<?php echo $post->postId; ?>" class="btn btn-dark">Comments</a>
+        <a href="<?php echo URLROOT; ?>/posts/show/<?php echo $post->postId; ?>" class="btn btn-dark">Comments</a>
     </div>
 <?php endforeach; ?>
 
