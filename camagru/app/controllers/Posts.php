@@ -25,13 +25,15 @@ class Posts extends Controller
         $posts = $this->postModel->getPosts();
 
         // Check whether user like some post
-        foreach ($posts as $post) {
-            $likes = $this->postModel->getLikesByPostId($post->postId);
+        if (isLoggedIn()) {
+            foreach ($posts as $post) {
+                $likes = $this->postModel->getLikesByPostId($post->postId);
 
-            foreach ($likes as $like) {
-                if ($like->user_id === $_SESSION['user_id']) {
-                    // Add field with likes
-                    $post->isLiked = true;
+                foreach ($likes as $like) {
+                    if ($like->user_id === $_SESSION['user_id']) {
+                        // Add field with likes
+                        $post->isLiked = true;
+                    }
                 }
             }
         }
@@ -45,13 +47,15 @@ class Posts extends Controller
     }
 
     public function show($id) {
-        // TODO add alert login to comment
+        // Check for login
+        if (!isLoggedIn()) {
+            flash('login_to_post', 'Please, login see comments');
+            redirect('/users/login');
+        }
+
         $post = $this->postModel->getPostById($id);
         $comments = $this->postModel->getCommentsByPostId($id);
-
-        if (!empty($_SESSION['user_id'])) {
-            $user = $this->userModel->getUserById(($_SESSION['user_id']));
-        }
+        $user = $this->userModel->getUserById(($_SESSION['user_id']));
 
         $data = [
             'post' => $post,

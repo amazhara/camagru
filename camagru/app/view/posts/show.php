@@ -9,21 +9,20 @@
 </div>
 
 <!--Comment form-->
-<?php if ($data['user']->id == $_SESSION['user_id']) : ?>
 
-    <form action="<?php echo URLROOT; ?>/posts/comment" method="post">
-        <div class="form-group">
-            <label for="Body">Write comment to post</label>
-            <input type="text" class="form-control" id="body" name="body" value="">
-            <input type="text" class="form-control" name="post_id" value="<?php echo $data['post']->id; ?>" style="display: none">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+<form action="<?php echo URLROOT; ?>/posts/comment" method="post">
+    <div class="form-group">
+        <label for="Body">Write comment to post</label>
+        <input type="text" class="form-control" id="body" name="body" value="">
+        <input type="text" class="form-control" name="post_id" value="<?php echo $data['post']->id; ?>"
+               style="display: none">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
-<?php endif; ?>
 
 <!--List comments-->
-<?php foreach($data['comments'] as $comment) :?>
+<?php foreach ($data['comments'] as $comment) : ?>
 
     <div class="card card-body mb-3">
         <div class="bg-light p-2 mb-3">
