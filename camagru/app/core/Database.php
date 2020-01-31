@@ -131,7 +131,8 @@ class Database {
         // Create comments table
         $dbh_tmp->exec("
             CREATE TABLE IF NOT EXISTS `camagru`.`comments` ( `id` INT NOT NULL AUTO_INCREMENT ,
-            `user_id` VARCHAR(255) NOT NULL , `post_id` VARCHAR(255) NOT NULL ,
+            `user_id` INT NOT NULL , `post_id` INT NOT NULL ,
+            `body` VARCHAR(255) NOT NULL , `user_name` VARCHAR(255) NOT NULL ,
             `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
             PRIMARY KEY (`id`)) ENGINE = InnoDB;
         ");
