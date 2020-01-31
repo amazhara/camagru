@@ -7,7 +7,9 @@
         <?php echo $data['post']->body; ?>
     </p>
 </div>
-<?php if ($data['post']->user_id == $_SESSION['user_id']) : ?>
+
+<!--Comment form-->
+<?php if ($data['user']->id == $_SESSION['user_id']) : ?>
 
     <form action="<?php echo URLROOT; ?>/posts/comment" method="post">
         <div class="form-group">
@@ -20,6 +22,7 @@
 
 <?php endif; ?>
 
+<!--List comments-->
 <?php foreach($data['comments'] as $comment) :?>
 
     <div class="card card-body mb-3">

@@ -47,15 +47,18 @@ class Posts extends Controller
     public function show($id) {
         // TODO add alert login to comment
         $post = $this->postModel->getPostById($id);
-        $user = $this->userModel->getUserById($post->user_id);
         $comments = $this->postModel->getCommentsByPostId($id);
+
+        if (!empty($_SESSION['user_id'])) {
+            $user = $this->userModel->getUserById(($_SESSION['user_id']));
+        }
 
         $data = [
             'post' => $post,
             'user' => $user,
             'comments' => $comments
         ];
-//        var_dump($data);
+
         $this->view('posts/show', $data);
     }
 
