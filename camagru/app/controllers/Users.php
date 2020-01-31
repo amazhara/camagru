@@ -146,6 +146,61 @@ class Users extends Controller
         $this->view('users/login', $data);
     }
 
+    public function settings() {
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            flash('login_to_post', 'Login to enter settings');
+            redirect('/users/login');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            // Sanitize post array
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+            // Convert data in array
+            $data = [
+                'email' => trim($_POST['email']),
+                'name' => trim($_POST['name']),
+                'password' => trim($_POST['password']),
+                'id' => $_SESSION['user_id'],
+                'email_err' => '',
+                'name_err' => '',
+                'password_err' => ''
+            ];
+
+            if (!empty($data['email'])) {
+                $this->userModel->updateUserEmail($data);
+            }
+
+            if (!empty($data['password'])) {
+                if (strlen($data['password'] < 6)) {
+                    $data['password_err'] = 'Password must be at least 6 characters';
+                } else {
+                    // Hash Password
+                    $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+                    $this->userModel->updateUserPassword($data);
+                }
+            }
+
+            if (!empty($data['name'])) {
+                $this->userModel->updateUserName($data);
+            }
+
+        } else {
+            $data = [
+                'email' => '',
+                'name' => '',
+                'password' => '',
+                'email_err' => '',
+                'name_err' => '',
+                'password_err' => ''
+            ];
+        }
+
+        $this->view('users/settings', $data);
+    }
+
     public function createUserSession($user) {
         // Save user info in session
         $_SESSION['user_id'] = $user->id;

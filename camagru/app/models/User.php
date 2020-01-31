@@ -95,4 +95,46 @@ class User {
         $row = $this->db->single();
         return $row;
     }
+
+    public function updateUserEmail($data) : bool {
+        $this->db->query('UPDATE users SET email = :email WHERE id = :id ');
+
+        // Bind value
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':id', $data['id']);
+
+        if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateUserName($data) : bool {
+        $this->db->query('UPDATE users SET name = :name WHERE id = :id ');
+
+        // Bind value
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':id', $data['id']);
+
+        if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateUserPassword($data) : bool {
+        $this->db->query('UPDATE users SET password = :password WHERE id = :id ');
+
+        // Bind value
+        $this->db->bind(':password', $data['password']);
+        $this->db->bind(':id', $data['id']);
+
+        if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
