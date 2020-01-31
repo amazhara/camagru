@@ -40,4 +40,3 @@ function flash($name = '', $message = '', $class = 'alert alert-success') {
         }
     }
 }
-

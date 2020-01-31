@@ -16,7 +16,6 @@ $init = new Router;
 
 
 
-// TODO comment posts
 // TODO make notifications by email when register
 // TODO make notifications when comment photo
 // TODO User change password
