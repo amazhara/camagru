@@ -24,14 +24,24 @@
 </div>
 
 <!--Webcam-->
-<div class="card bg-light mt-5">
+<div class="card bg-light mt-5" style="max-width: 800px;">
     <div class="card-body camera">
         <h2 class="card-title text-center">Snap Photo</h2>
-        <video class="card-img-top" id="video" autoplay>Video stream not available.</video>
-        <button id="snap" class="btn btn-primary float-right" data-toggle="modal" data-target="#Modal">Snap Photo
-        </button>
+        <canvas class="card-img" id="canvas"></canvas>
+        <div class="card-body btn-group-sm" role="group">
+            <button id="sepia" type="button" class="btn btn-secondary">Sepia</button>
+            <button id="invert" type="button" class="btn btn-secondary">Invert</button>
+            <button id="blur" type="button" class="btn btn-secondary">Blur</button>
+            <button id="strongblur" type="button" class="btn btn-secondary">Strong Blur</button>
+            <button id="default" type="button" class="btn btn-secondary">Default</button>
+            <button id="snap" class="btn btn-primary float-right" data-toggle="modal" data-target="#Modal">Snap Photo
+            </button>
+        </div>
     </div>
 </div>
+
+<!--Hidden original video stream-->
+<video style="display: none;" id="video" autoplay></video>
 
 <script>
     let width = 640;  // Scale the photo width to this
@@ -43,8 +53,10 @@
     let streaming = false;
 
     let video = document.getElementById('video');
-    let canvas = document.createElement('canvas');
+    let canvas = document.getElementById('canvas');
     let image = document.getElementById('image');
+    let color = '';
+
 
     // Get access to the camera!
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -76,6 +88,26 @@
         takePicture();
         image.setAttribute('src', canvas.toDataURL());
     });
+
+    document.getElementById("sepia").addEventListener('click', function () {
+        color = 'sepia(1)';
+    });
+    document.getElementById("invert").addEventListener('click', function () {
+        color = 'invert(50)';
+    });
+    document.getElementById("blur").addEventListener('click', function () {
+        color = 'blur(5px)';
+    });
+    document.getElementById("strongblur").addEventListener('click', function () {
+        color = 'blur(20px)';
+    });
+    document.getElementById("default").addEventListener('click', function () {
+        color = '';
+    });
+
+    window.setInterval(function() {
+        takePicture();
+    }, 8);
 
     document.getElementById('send').addEventListener('click', function () {
         let body = document.getElementById('body');
@@ -110,8 +142,11 @@
     function takePicture() {
         const context = canvas.getContext('2d');
         if (width && height) {
+
             canvas.width = width;
             canvas.height = height;
+            context.filter = color;
+            context.fillRect(0,0,width,height);
             context.drawImage(video, 0, 0, width, height);
         }
     }
