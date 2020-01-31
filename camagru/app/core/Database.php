@@ -29,7 +29,7 @@ class Database {
         ];
 
         // Create db and all tables
-//        $this->prepare($options);
+        $this->prepare($options);
 
         // Connect to db and create PDO instance
         try {
@@ -91,11 +91,49 @@ class Database {
     }
 
     private function prepare($options) {
+
         try {
-            $dbh_tmp = new PDO("mysql:host=localhost", $this->user, $this->pass, $options);
+            $dbh_tmp = new PDO('mysql:host=' . $this->host , $this->user, $this->pass, $options);
         } catch (PDOException $e) {
             $this->error = $e->getMessage();
             echo $this->error;
+            die('Need to change host in config file or create database by hands, some critical error happened');
         }
+
+        // Create Db
+        $dbh_tmp->exec('CREATE DATABASE IF NOT EXISTS camagru');
+
+        // Create users table
+        $dbh_tmp->exec("
+            CREATE TABLE IF NOT EXISTS `camagru`.`users` ( `id` INT NOT NULL AUTO_INCREMENT ,
+            `name` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NOT NULL ,
+            `password` VARCHAR(60) NOT NULL ,
+            `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+            PRIMARY KEY (`id`)) ENGINE = InnoDB;
+        ");
+
+        // Create posts table
+        $dbh_tmp->exec("
+            CREATE TABLE IF NOT EXISTS `camagru`.`posts` ( `id` INT NOT NULL AUTO_INCREMENT ,
+            `user_id` INT NOT NULL , `photo` VARCHAR(255) NOT NULL ,
+            `body` VARCHAR(255) NOT NULL , `likes_count` INT NULL DEFAULT NULL ,
+            `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+            PRIMARY KEY (`id`)) ENGINE = InnoDB;
+        ");
+
+        // Create likes table
+        $dbh_tmp->exec("
+            CREATE TABLE IF NOT EXISTS `camagru`.`likes` ( `id` INT NOT NULL AUTO_INCREMENT ,
+            `user_id` INT NOT NULL , `post_id` INT NOT NULL ,
+            PRIMARY KEY (`id`)) ENGINE = InnoDB;
+        ");
+
+        // Create comments table
+        $dbh_tmp->exec("
+            CREATE TABLE IF NOT EXISTS `camagru`.`comments` ( `id` INT NOT NULL AUTO_INCREMENT ,
+            `user_id` VARCHAR(255) NOT NULL , `post_id` VARCHAR(255) NOT NULL ,
+            `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+            PRIMARY KEY (`id`)) ENGINE = InnoDB;
+        ");
     }
 }
