@@ -49,7 +49,7 @@ class Posts extends Controller
     public function show($id) {
         // Check for login
         if (!isLoggedIn()) {
-            flash('login_to_post', 'Please, login see comments');
+            flash('login_to_post', 'Please, login to see comments');
             redirect('/users/login');
         }
 

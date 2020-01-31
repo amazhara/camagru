@@ -8,13 +8,8 @@
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
-                <?php if (isset($_SESSION['user_id'])) : ?>
-                <li>
-                    <a class="nav-link" href="<?php echo URLROOT; ?>/posts">Posts list</a>
-                </li>
-                <?php endif; ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URLROOT; ?>">Home</a>
+                    <a class="nav-link" href="<?php echo URLROOT; ?>/posts">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo URLROOT; ?>/pages/about">About</a>
