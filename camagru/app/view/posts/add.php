@@ -37,6 +37,7 @@
             <button id="snap" class="btn btn-primary float-right" data-toggle="modal" data-target="#Modal">Snap Photo
             </button>
         </div>
+        <input type="file" name="pic" id="pic" accept=".jpg, .jpeg, .png" data-toggle="modal" data-target="#Modal">
     </div>
 </div>
 
@@ -55,6 +56,7 @@
     let video = document.getElementById('video');
     let canvas = document.getElementById('canvas');
     let image = document.getElementById('image');
+    let picture = document.getElementById('pic');
     let color = '';
 
 
@@ -84,9 +86,13 @@
         }
     });
 
+    picture.addEventListener('change', function () {
+        image.src = URL.createObjectURL(picture.files[0]);
+    });
+
     document.getElementById("snap").addEventListener('click', function () {
         takePicture();
-        image.setAttribute('src', canvas.toDataURL());
+        // image.setAttribute('src', canvas.toDataURL());
     });
 
     document.getElementById("sepia").addEventListener('click', function () {
