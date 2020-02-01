@@ -31,6 +31,9 @@
             <?php echo 'Total likes: ' . $post->likes_count; ?>
         </p>
         <a href="<?php echo URLROOT; ?>/posts/show/<?php echo $post->postId; ?>" class="btn btn-dark">Comments</a>
+        <?php if (isLoggedIn() && $post->userId == $_SESSION['user_id']) : ?>
+            <a href="<?php URLROOT ; ?>/posts/delete/<?php echo $post->postId; ?>" class="btn btn-danger">Delete Post</a>
+        <?php endif; ?>
     </div>
 <?php endforeach; ?>
 

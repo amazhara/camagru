@@ -18,4 +18,3 @@ $init = new Router;
 // TODO make notifications when comment photo
 // TODO Reset password
 // TODO User on/off notification via email
-// TODO User delete his own posts

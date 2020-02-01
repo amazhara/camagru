@@ -4,7 +4,6 @@
  * Router takes request and cuts it in Controller -> Action (Method)
  * example /user/login is cut to User -> login
  */
-// TODO fix error when using existing controller and wrong method (ex. users/aaa)
 class Router {
     protected $controller = 'Pages';
     protected $method = 'index';
@@ -28,7 +27,6 @@ class Router {
         // Instantiate controller
         $this->controller = new $this->controller;
 
-        // TODO now default method works even if controller is not Pages, it may be not secure in some cases
         // Check if url contains second value
         if (isset($url[1])) {
             // Check if method exists in controller

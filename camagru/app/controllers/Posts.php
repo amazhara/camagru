@@ -175,6 +175,30 @@ class Posts extends Controller
         }
     }
 
+    public function delete($id)
+    {
+        // Check if user logged in
+        if (isLoggedIn() == false) {
+            redirect('/posts');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+
+            //get existing post from model
+            $post = $this->postModel->getPostById($id);
+
+            //check for owner
+            if ($post->user_id != $_SESSION['user_id']) {
+                redirect('/posts');
+            }
+
+            if ($this->postModel->deletePost($id)) {
+                flash('post_message', 'Post Removed');
+                redirect('/posts');
+            }
+        }
+    }
+
     private function uploadImage($image): string
     {
         // Get photo extension
