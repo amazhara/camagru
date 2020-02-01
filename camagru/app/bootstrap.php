@@ -2,6 +2,13 @@
 
 // TODO add namespaces
 
+// For debug purpose
+//header('Content-Type:text/plain');
+
+// Turn on error messages
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 // Include config files
 require_once 'config/config.php';
 require_once 'config/database.php';

@@ -1,13 +1,5 @@
 <?php
 
-// For debug purpose
-//header('Content-Type:text/plain');
-
-// TODO move error reporting setup to another place
-// Turn on error messages
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 // Include app
 include_once "../app/bootstrap.php";
 
