@@ -16,7 +16,7 @@
                 <input type="text" id="body" class="form-control" value="Your comment">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Take another</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="place">Take another</button>
                 <input id="send" type="submit" value="Save post" class="btn btn-success">
             </div>
         </div>
@@ -41,6 +41,9 @@
     </div>
 </div>
 
+<div class="container mt-5" id="paste">
+</div>
+
 <!--Hidden original video stream-->
 <video style="display: none;" id="video" autoplay></video>
 
@@ -57,6 +60,7 @@
     let canvas = document.getElementById('canvas');
     let image = document.getElementById('image');
     let picture = document.getElementById('pic');
+    let paste = document.getElementById('paste');
     let color = '';
 
 
@@ -86,13 +90,25 @@
         }
     });
 
+    document.getElementById('place').addEventListener('click', function () {
+        const newImage = document.createElement('img');
+        newImage.setAttribute('src', image.src);
+        newImage.setAttribute('class', 'rounded float-left mt-2 ml-2');
+        newImage.setAttribute('width', '200px');
+        newImage.setAttribute('height', '200px');
+        newImage.setAttribute('data-toggle', 'modal');
+        newImage.setAttribute('data-target', '#Modal');
+        console.log(newImage);
+        paste.appendChild(newImage);
+    });
+
     picture.addEventListener('change', function () {
         image.src = URL.createObjectURL(picture.files[0]);
     });
 
     document.getElementById("snap").addEventListener('click', function () {
         takePicture();
-        // image.setAttribute('src', canvas.toDataURL());
+        image.setAttribute('src', canvas.toDataURL());
     });
 
     document.getElementById("sepia").addEventListener('click', function () {

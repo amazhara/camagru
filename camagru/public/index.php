@@ -19,4 +19,3 @@ $init = new Router;
 // TODO Reset password
 // TODO User on/off notification via email
 // TODO User delete his own posts
-// TODO Snap photo list
