@@ -46,6 +46,8 @@ class Users extends Controller
             // Check name
             if (empty($data['name'])) {
                 $data['name_err'] = 'Please fill name field';
+            } elseif(strlen($data['name']) < 4) {
+                $data['name_err'] = 'Name must be at least 4 characters';
             }
 
             // Check password
@@ -70,7 +72,8 @@ class Users extends Controller
 
                 // Register User
                 if ($this->userModel->register($data)) {
-                    flash('register_success', 'You are registered and can log in');
+//                    flash('register_success', 'You are registered and can log in');
+                    flash('register_success', 'You need to confirm your email to login');
                     redirect('/users/login');
                 } else {
                     // TODO same problem with 404 error (search for all dies and fix)
@@ -170,7 +173,11 @@ class Users extends Controller
             ];
 
             if (!empty($data['email'])) {
-                $this->userModel->updateUserEmail($data);
+                if ($this->userModel->findUserByEmail($data['email'])) {
+                    $data['email_err'] = 'This email is already used, please fill another one';
+                 } else {
+                    $this->userModel->updateUserEmail($data);
+                }
             }
 
             if (!empty($data['password'])) {
@@ -184,7 +191,11 @@ class Users extends Controller
             }
 
             if (!empty($data['name'])) {
-                $this->userModel->updateUserName($data);
+                if(strlen($data['name']) < 4) {
+                    $data['name_err'] = 'Name must be at least 4 characters';
+                } else {
+                    $this->userModel->updateUserName($data);
+                }
             }
 
         } else {
@@ -217,5 +228,25 @@ class Users extends Controller
         // Destroy session
         session_destroy();
         redirect('/users/login');
+    }
+
+    public function sendMail($mail) {
+////        $message = 'Lol';
+////        var_dump(mail('ridehed280@allmtr.com', 'Email confirmation', $message));
+////        // the message
+////        $msg = "First line of text\nSecond line of text";
+////
+////// use wordwrap() if lines are longer than 70 characters
+////        $msg = wordwrap($msg,70);
+////
+////// send email
+////        var_dump(mail("someone@example.com","My subject",$msg));
+//        $to      = 'ridehed280@allmtr.com';
+//        $subject = 'Registration';
+//        $message = 'Hey, you confirm registration on camagru at '.date("d.m.Y", time()).' by user: '.'aaaa'.' Go to the link
+//        <a href="http://localhost:8080/camagru/account/status?token='.'fasjdfsafaf'.'&email='.$to .'">'.'http://localhost:8080/camagru/account/status?token='.'fasjdfsafaf'.'</a>';
+//        $headers  = 'MIME-Version: 1.0' . "\r\n";
+//        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+//       var_dump( mail($to, $subject, $message, $headers));
     }
 }
