@@ -250,3 +250,4 @@ class Users extends Controller
 //       var_dump( mail($to, $subject, $message, $headers));
     }
 }
+

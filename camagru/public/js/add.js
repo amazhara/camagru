@@ -51,7 +51,6 @@ document.getElementById('place').addEventListener('click', function () {
     newImage.onclick = function () {
         image.src = newImage.src;
     };
-    console.log(newImage);
     paste.appendChild(newImage);
 });
 
@@ -86,6 +85,8 @@ window.setInterval(function() {
 
 document.getElementById('send').addEventListener('click', function () {
     let body = document.getElementById('body');
+    let saveCanvas = document.createElement('canvas');
+    let context = saveCanvas.getContext('2d');
 
     // Check if user entered comment
     if (body.value === 'Your comment') {
@@ -96,20 +97,23 @@ document.getElementById('send').addEventListener('click', function () {
     // Create form to send
     let form = new FormData;
 
-    canvas.toBlob(function (blob) {
+    // Initialise image
+    saveCanvas.width = width;
+    saveCanvas.height = height;
+    context.drawImage(image, 0, 0, width, height);
+
+    saveCanvas.toBlob(function (blob) {
         // Add photo to form
         form.append('photo', blob, 'photo.png');
         // Add body to form
         form.append('body', body.value);
-        // console.log(form.get('body'));
-        // console.log(form.get('photo'));
 
-        let response = fetch('<?php echo URLROOT; ?>/posts/add', {
+        let response = fetch('http://localhost:8080/posts/add', {
             method: 'POST',
             body: form
         }).then(response => response.text())
         // .then(response => console.log(response))
-            .then(response => window.location.replace('<?php echo URLROOT; ?>/posts'))
+            .then(response => window.location.replace('http://localhost:8080/posts'))
 
     }, 'image/png');
 });
