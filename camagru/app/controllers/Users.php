@@ -31,6 +31,7 @@ class Users extends Controller
                 'password' => trim($_POST['password']),
                 'confirm_password' => trim($_POST['confirm_password']),
                 'token' => md5(uniqid(rand(), true)),
+                'recover_token' => md5(uniqid(rand(), true)),
                 'name_err' => '',
                 'email_err' => '',
                 'password_err' => '',
@@ -223,10 +224,34 @@ class Users extends Controller
             redirect('/posts');
         }
 
-        $data = [
-            'email' => '',
-            'email_err' => ''
-        ];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            // Sanitize post array
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+            // Convert data in array
+            $data = [
+                'email' => trim($_POST['email']),
+                'email_err' => '',
+            ];
+
+            if (empty($data['email'])) {
+                $data['email_err'] = 'Please enter email';
+            } elseif (!$this->userModel->findUserByEmail($data['email'])) {
+                $data['email_err'] = 'No such email found';
+            }
+
+            if (empty($data['email_err'])) {
+                $user = $this->userModel->getUserByEmail($data['email']);
+                $this->mailRecover($user->email, $user->recover_token);
+            }
+
+        } else {
+            $data = [
+                'email' => '',
+                'email_err' => ''
+            ];
+        }
 
         $this->view('users/recover', $data);
     }
@@ -254,15 +279,21 @@ class Users extends Controller
             'To confirm your email use this link - ' . URLROOT . '/users/verify/' . $token);
     }
 
+    private function mailRecover($email, $token) {
+        mail($email, 'Email recover',
+            'Recover email link - ' . URLROOT . '/users/change/' . $token);
+    }
+
     public function verify($token) {
         $data = [
             'token' => $token
         ];
         $user = $this->userModel->getUserByToken($data['token']);
         if ($user) {
-            flash('registration_success', 'You\'re verified and now can log in');
+            $this->userModel->setVerifiedUserById($user->id);
+            flash('register_success', 'You\'re verified and now can log in');
         } else {
-            flash('registration_success', 'Something went wrong with verification - use valid link');
+            flash('register_success', 'Something went wrong with verification - use valid link');
         }
         redirect('/users/login');
     }

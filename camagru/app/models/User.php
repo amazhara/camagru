@@ -19,13 +19,14 @@ class User {
     // Register user in table
     public function register($data) : bool {
         // Sql query
-        $this->db->query('INSERT INTO users (name, email, password, token) VALUES(:name, :email, :password, :token)');
+        $this->db->query('INSERT INTO users (name, email, password, token, recover_token) VALUES(:name, :email, :password, :token, :recover_token)');
 
         // Bind values
         $this->db->bind(':name', $data['name']);
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':password', $data['password']);
         $this->db->bind(':token', $data['token']);
+        $this->db->bind(':recover_token', $data['recover_token']);
 
         // Execute
         if ($this->db->execute()) {
@@ -69,6 +70,17 @@ class User {
         } else {
             return false;
         }
+    }
+
+    public function getUserByEmail($email) {
+
+        $this->db->query('SELECT * FROM users WHERE email = :email');
+
+        // Bind value
+        $this->db->bind(':email', $email);
+        $row = $this->db->single();
+
+        return $row;
     }
 
     // Check if email exists

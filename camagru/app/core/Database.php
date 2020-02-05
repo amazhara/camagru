@@ -108,12 +108,12 @@ class Database {
             CREATE TABLE IF NOT EXISTS `camagru`.`users` ( `id` INT NOT NULL AUTO_INCREMENT ,
             `name` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NOT NULL ,
             `password` VARCHAR(60) NOT NULL ,
+            `verified` INT NOT NULL DEFAULT '0',
+            `token` VARCHAR(255) NULL DEFAULT NULL,
+            `recover_token` VARCHAR(255) NULL DEFAULT NULL,
             `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
             PRIMARY KEY (`id`)) ENGINE = InnoDB;
         ");
-
-//        `verified` INT NOT NULL DEFAULT '0'
-//        `token` VARCHAR(255) NULL DEFAULT NULL
 
         // Create posts table
         $dbh_tmp->exec("
