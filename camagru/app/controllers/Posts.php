@@ -57,6 +57,10 @@ class Posts extends Controller
         $comments = $this->postModel->getCommentsByPostId($id);
         $user = $this->userModel->getUserById(($_SESSION['user_id']));
 
+        if (!$post) {
+            redirect('/posts');
+        }
+
         $data = [
             'post' => $post,
             'user' => $user,
@@ -190,9 +194,16 @@ class Posts extends Controller
             //get existing post from model
             $post = $this->postModel->getPostById($id);
 
+            // Check if post exists
+            if (!$post) {
+                redirect('/posts');
+                return;
+            }
+
             //check for owner
             if ($post->user_id != $_SESSION['user_id']) {
                 redirect('/posts');
+                return;
             }
 
             if ($this->postModel->deletePost($id)) {
