@@ -218,6 +218,19 @@ class Users extends Controller
         $this->view('users/settings', $data);
     }
 
+    public function recover() {
+        if (isLoggedIn()) {
+            redirect('/posts');
+        }
+
+        $data = [
+            'email' => '',
+            'email_err' => ''
+        ];
+
+        $this->view('users/recover', $data);
+    }
+
     public function createUserSession($user) {
         // Save user info in session
         $_SESSION['user_id'] = $user->id;
