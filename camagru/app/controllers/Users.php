@@ -247,7 +247,6 @@ class Users extends Controller
         ];
         $user = $this->userModel->getUserByToken($data['token']);
         if ($user) {
-            var_dump($this->userModel->setVerifiedUserById($user->id));
             flash('registration_success', 'You\'re verified and now can log in');
         } else {
             flash('registration_success', 'Something went wrong with verification - use valid link');

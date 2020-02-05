@@ -88,6 +88,9 @@ class Posts extends Controller
             if (!empty($data['body']) && !empty($data['post_id']) && !empty($data['user_id']) && !empty($data['user_name'])) {
                 // Save comment
                 $this->postModel->comment($data);
+                $post = $this->postModel->getPostById($data['post_id']);
+                $receiver = $this->userModel->getUserById($post->user_id);
+                $this->mail($receiver->email, $receiver->name, $post->id);
             }
             redirect('/posts/show/' . $_POST['post_id']);
         }
@@ -216,5 +219,10 @@ class Posts extends Controller
         move_uploaded_file($image['tmp_name'], $dest . '/' . $filename);
 
         return $filename;
+    }
+
+    private function mail($email, $name, $id) {
+        mail($email,
+            'New comment', 'You\'re post ' . URLROOT . '/posts/show/' . $id . ' was commented by ' . $name);
     }
 }
