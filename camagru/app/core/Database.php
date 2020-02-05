@@ -112,6 +112,9 @@ class Database {
             PRIMARY KEY (`id`)) ENGINE = InnoDB;
         ");
 
+//        `verified` INT NOT NULL DEFAULT '0'
+//        `token` VARCHAR(255) NULL DEFAULT NULL
+
         // Create posts table
         $dbh_tmp->exec("
             CREATE TABLE IF NOT EXISTS `camagru`.`posts` ( `id` INT NOT NULL AUTO_INCREMENT ,

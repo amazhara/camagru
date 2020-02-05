@@ -30,6 +30,7 @@ class Users extends Controller
                 'email' => trim($_POST['email']),
                 'password' => trim($_POST['password']),
                 'confirm_password' => trim($_POST['confirm_password']),
+                'token' => md5(uniqid(rand(), true)),
                 'name_err' => '',
                 'email_err' => '',
                 'password_err' => '',
@@ -72,7 +73,7 @@ class Users extends Controller
 
                 // Register User
                 if ($this->userModel->register($data)) {
-//                    flash('register_success', 'You are registered and can log in');
+                    $this->mail($data['email'], $data['token']);
                     flash('register_success', 'You need to confirm your email to login');
                     redirect('/users/login');
                 } else {
@@ -132,7 +133,12 @@ class Users extends Controller
 
                 // Check if password is correct and create session
                 if ($user) {
-                    $this->createUserSession($user);
+                    // Check verification
+                    if ($this->userModel->getVerifiedById($user->id)) {
+                        $this->createUserSession($user);
+                    } else {
+                        flash('register_success', 'Verify account by link sent to you\'re email first', 'alert alert-danger');
+                    }
                 } else {
                     $data['email_err'] = 'No such email found';
                 }
@@ -230,24 +236,22 @@ class Users extends Controller
         redirect('/users/login');
     }
 
-    public function sendMail($mail) {
-////        $message = 'Lol';
-////        var_dump(mail('ridehed280@allmtr.com', 'Email confirmation', $message));
-////        // the message
-////        $msg = "First line of text\nSecond line of text";
-////
-////// use wordwrap() if lines are longer than 70 characters
-////        $msg = wordwrap($msg,70);
-////
-////// send email
-////        var_dump(mail("someone@example.com","My subject",$msg));
-//        $to      = 'ridehed280@allmtr.com';
-//        $subject = 'Registration';
-//        $message = 'Hey, you confirm registration on camagru at '.date("d.m.Y", time()).' by user: '.'aaaa'.' Go to the link
-//        <a href="http://localhost:8080/camagru/account/status?token='.'fasjdfsafaf'.'&email='.$to .'">'.'http://localhost:8080/camagru/account/status?token='.'fasjdfsafaf'.'</a>';
-//        $headers  = 'MIME-Version: 1.0' . "\r\n";
-//        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-//       var_dump( mail($to, $subject, $message, $headers));
+    private function mail($email, $token) {
+        mail($email, 'Email confirmation',
+            'To confirm your email use this link - ' . URLROOT . '/users/verify/' . $token);
+    }
+
+    public function verify($token) {
+        $data = [
+            'token' => $token
+        ];
+        $user = $this->userModel->getUserByToken($data['token']);
+        if ($user) {
+            var_dump($this->userModel->setVerifiedUserById($user->id));
+            flash('registration_success', 'You\'re verified and now can log in');
+        } else {
+            flash('registration_success', 'Something went wrong with verification - use valid link');
+        }
+        redirect('/users/login');
     }
 }
-

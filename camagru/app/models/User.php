@@ -19,12 +19,13 @@ class User {
     // Register user in table
     public function register($data) : bool {
         // Sql query
-        $this->db->query('INSERT INTO users (name, email, password) VALUES(:name, :email, :password)');
+        $this->db->query('INSERT INTO users (name, email, password, token) VALUES(:name, :email, :password, :token)');
 
         // Bind values
         $this->db->bind(':name', $data['name']);
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':password', $data['password']);
+        $this->db->bind(':token', $data['token']);
 
         // Execute
         if ($this->db->execute()) {
@@ -132,6 +133,44 @@ class User {
         $this->db->bind(':id', $data['id']);
 
         if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getUserByToken($token) {
+        $this->db->query('SELECT * FROM users WHERE token = :token');
+
+        // Bind value
+        $this->db->bind(':token', $token);
+        $user = $this->db->single();
+
+        return $user;
+    }
+
+    public function setVerifiedUserById($id) : bool {
+        $this->db->query('UPDATE users SET verified = :verified WHERE id = :id ');
+
+        // Bind values
+        $this->db->bind(':verified', 1);
+        $this->db->bind(':id', $id);
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getVerifiedById($id) : bool {
+        $this->db->query('SELECT verified FROM users WHERE id = :id');
+
+        // Bind values
+        $this->db->bind(':id', $id);
+
+        $row = $this->db->single();
+
+        if ($row->verified) {
             return true;
         } else {
             return false;

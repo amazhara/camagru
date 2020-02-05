@@ -17,6 +17,7 @@ function isLoggedIn(): bool {
  * Message is held in $_SESSION array
  * First call to save massage -> flash('register_success', 'You can now log in')
  * Then call with only name to print -> flash('register_success')
+ * Customise bootstrap class as well
  */
 function flash($name = '', $message = '', $class = 'alert alert-success') {
     if (!empty($name)) {
