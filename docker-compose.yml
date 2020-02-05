@@ -10,7 +10,8 @@ services:
       - "8080:80"
     links: 
       - mysql
-    volumes: 
+      - exim:exim
+    volumes:
       - ${DOCUMENT_ROOT-./camagru}:/var/www/html
       - ${LOG_DIR-./logs/apache2}:/var/log/apache2
   mysql:
@@ -38,5 +39,14 @@ services:
       - '8100:80'
     volumes: 
       - /sessions
+  exim:
+    image: rickw/debian-exim-send
+    container_name: 'exim'
+    restart: always
+    environment:
+      PRIMARY_HOST: example.org
+      ALLOWED_HOSTS: "*"
+    ports:
+      - "4444:25"
 volumes:
   my-datavolume:
