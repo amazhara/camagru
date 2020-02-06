@@ -1,7 +1,5 @@
 <?php
 
-// TODO add namespaces
-
 // For debug purpose
 //header('Content-Type:text/plain');
 

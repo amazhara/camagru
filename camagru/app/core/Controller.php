@@ -22,8 +22,7 @@ class Controller
         if (file_exists('../app/view/' . $view . '.php')) {
             require_once '../app/view/' . $view . '.php';
         } else {
-    //      TODO make better error massage for ex 404 error
-            die('View does not exists');
+            redirect('/pages/none');
         }
     }
 }

@@ -4,7 +4,6 @@
  * User option controller
  * Loads Users model and view
  */
-// TODO make js script to remove error on click
 class Users extends Controller
 {
     // To hold loaded model
@@ -78,8 +77,7 @@ class Users extends Controller
                     flash('register_success', 'You need to confirm your email to login');
                     redirect('/users/login');
                 } else {
-                    // TODO same problem with 404 error (search for all dies and fix)
-                    die('Something went wrong');
+                    redirect('/pages/none');
                 }
             }
         } else {

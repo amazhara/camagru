@@ -26,4 +26,9 @@ class Pages extends Controller {
         ];
         $this->view('pages/about', $data);
     }
+
+    // 404 error
+    public function none() {
+        $this->view('pages/none');
+    }
 }

@@ -42,7 +42,6 @@ class Posts extends Controller
             'posts' => $posts
         ];
 
-        // TODO make view responsive
         $this->view('posts/index', $data);
     }
 
