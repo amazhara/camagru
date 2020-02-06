@@ -151,11 +151,35 @@ class User {
         }
     }
 
+    public function updateUserRecoverToken($data) : bool {
+        $this->db->query('UPDATE users SET recover_token = :recover_token WHERE id = :id ');
+
+        // Bind value
+        $this->db->bind(':recover_token', $data['new_token']);
+        $this->db->bind(':id', $data['id']);
+
+        if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function getUserByToken($token) {
         $this->db->query('SELECT * FROM users WHERE token = :token');
 
         // Bind value
         $this->db->bind(':token', $token);
+        $user = $this->db->single();
+
+        return $user;
+    }
+
+    public function getUserByRecoverToken($token) {
+        $this->db->query('SELECT * FROM users WHERE recover_token = :recover_token');
+
+        // Bind value
+        $this->db->bind(':recover_token', $token);
         $user = $this->db->single();
 
         return $user;

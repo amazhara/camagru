@@ -232,7 +232,7 @@ class Users extends Controller
             // Convert data in array
             $data = [
                 'email' => trim($_POST['email']),
-                'email_err' => '',
+                'email_err' => ''
             ];
 
             if (empty($data['email'])) {
@@ -244,6 +244,8 @@ class Users extends Controller
             if (empty($data['email_err'])) {
                 $user = $this->userModel->getUserByEmail($data['email']);
                 $this->mailRecover($user->email, $user->recover_token);
+                flash('register_success', 'Your recover link is sent');
+                redirect('/users/login');
             }
 
         } else {
@@ -282,6 +284,52 @@ class Users extends Controller
     private function mailRecover($email, $token) {
         mail($email, 'Email recover',
             'Recover email link - ' . URLROOT . '/users/change/' . $token);
+    }
+
+    public function change($token) {
+        $user = $this->userModel->getUserByRecoverToken($token);
+        if ($user) {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                // Sanitize post array
+                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+                $data = [
+                    'token' => $token,
+                    'password' => trim($_POST['password']),
+                    'id' => $user->id,
+                    'new_token' => md5(uniqid(rand(), true)),
+                    'password_err' => ''
+                ];
+
+                if (empty($data['password'])) {
+                    $data['password_err'] = 'Please fill password field';
+                } elseif (strlen($data['password']) < 6) {
+                    $data['password_err'] = 'Password must be at least 6 characters';
+                }
+
+                // Verification passed
+                if(empty($data['password_err'])) {
+                    // Hash Password
+                    $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+                    $this->userModel->updateUserPassword($data);
+                    $this->userModel->updateUserRecoverToken($data);
+                    flash('register_success', 'New password saved - now you can login');
+                    redirect('/users/login');
+                }
+
+            } else {
+                $data = [
+                    'token' => $token,
+                    'password' => '',
+                    'password_err' => ''
+                ];
+            }
+            $this->view('users/change', $data);
+        } else {
+            flash('register_success', 'Something went wrong with verification - use valid link');
+            redirect('/users/login');
+        }
     }
 
     public function verify($token) {

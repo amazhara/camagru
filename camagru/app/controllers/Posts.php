@@ -234,6 +234,6 @@ class Posts extends Controller
 
     private function mail($email, $name, $id) {
         mail($email,
-            'New comment', 'You\'re post ' . URLROOT . '/posts/show/' . $id . ' was commented by ' . $name);
+            'New comment', 'Your post ' . URLROOT . '/posts/show/' . $id . ' was commented by ' . $name);
     }
 }
