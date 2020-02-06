@@ -212,4 +212,18 @@ class User {
             return false;
         }
     }
+
+    public function setUserReceiveEmail($data) {
+        $this->db->query('UPDATE users SET receive_email = :receive_email WHERE id = :id ');
+
+        // Bind value
+        $this->db->bind(':receive_email', $data['checked']);
+        $this->db->bind(':id', $data['id']);
+
+        if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

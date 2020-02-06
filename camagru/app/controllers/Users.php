@@ -174,6 +174,7 @@ class Users extends Controller
                 'name' => trim($_POST['name']),
                 'password' => trim($_POST['password']),
                 'id' => $_SESSION['user_id'],
+                'checked' => isset($_POST['check']) ? 1 : 0,
                 'email_err' => '',
                 'name_err' => '',
                 'password_err' => ''
@@ -205,11 +206,15 @@ class Users extends Controller
                 }
             }
 
+            // Reinitialise if changed
+            $this->userModel->setUserReceiveEmail($data);
+
         } else {
             $data = [
                 'email' => '',
                 'name' => '',
                 'password' => '',
+                'checked' => $this->userModel->getUserById($_SESSION['user_id'])->receive_email,
                 'email_err' => '',
                 'name_err' => '',
                 'password_err' => ''

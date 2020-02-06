@@ -94,7 +94,9 @@ class Posts extends Controller
                 $this->postModel->comment($data);
                 $post = $this->postModel->getPostById($data['post_id']);
                 $receiver = $this->userModel->getUserById($post->user_id);
-                $this->mail($receiver->email, $receiver->name, $post->id);
+                if ($receiver->receive_email == true) {
+                    $this->mail($receiver->email, $receiver->name, $post->id);
+                }
             }
             redirect('/posts/show/' . $_POST['post_id']);
         }
